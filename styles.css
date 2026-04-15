@@ -139,6 +139,50 @@ img { max-width: 100%; display: block; }
   flex-wrap: wrap;
   margin-bottom: 0.75rem;
 }
+
+/* Demo signup form */
+.demo-form {
+  display: flex;
+  gap: 0.5rem;
+  margin: 0 0 0.75rem;
+  flex-wrap: wrap;
+  max-width: 32rem;
+}
+.demo-form input[type="email"] {
+  flex: 1 1 14rem;
+  min-width: 0;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  font-family: inherit;
+  color: var(--fg);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  outline: none;
+  transition: border-color 0.12s ease, box-shadow 0.12s ease;
+}
+.demo-form input[type="email"]::placeholder { color: var(--muted); }
+.demo-form input[type="email"]:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(49, 130, 246, 0.12);
+}
+.demo-form button[type="submit"] {
+  cursor: pointer;
+  font-family: inherit;
+  white-space: nowrap;
+}
+.section-cta .demo-form { margin-left: auto; margin-right: auto; }
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
 .btn {
   display: inline-block;
   padding: 0.75rem 1.25rem;

@@ -3,7 +3,7 @@
 **Product**: TOPIK Note (iOS · Android)
 **Landing**: https://luke-gu.github.io/topik-note-demo/
 **Date**: 2026-04-15
-**Owner**: Lee Jung Holdings · codelue01@gmail.com
+**Contact**: codelue01@gmail.com
 
 ---
 
