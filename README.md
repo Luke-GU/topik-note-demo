@@ -4,7 +4,7 @@
 
 **Live URL**: https://luke-gu.github.io/topik-note-demo/
 **Repo**: https://github.com/Luke-GU/topik-note-demo
-**Contact**: codelue01@gmail.com
+**Creator**: GEONWOO JUNG · codelue01@gmail.com
 
 ## 3 Deliverables
 

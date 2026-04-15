@@ -3,7 +3,7 @@
 **Product**: TOPIK Note (iOS · Android)
 **Landing**: https://luke-gu.github.io/topik-note-demo/
 **Date**: 2026-04-15
-**Contact**: codelue01@gmail.com
+**Creator**: GEONWOO JUNG · codelue01@gmail.com
 
 ---
 
