@@ -1,28 +1,28 @@
 # TOPIK Note — 1-Page PRD
 
 **Product**: TOPIK Note (iOS · Android)
-**Landing**: https://topik-note.com
+**Landing**: https://luke-gu.github.io/topik-note-demo/
 **Date**: 2026-04-15
-**Owner**: Lee Jung Holdings
+**Owner**: Lee Jung Holdings · codelue01@gmail.com
 
 ---
 
 ## 0. Canonical Copy (shared across Landing / PRD / App Store)
 
 - **Target persona (1 sentence)**: Foreign adult learners who must pass TOPIK level 3 or higher within 3–6 months for a student visa, work permit, or graduate admission, and who can only study 30–60 minutes a day during their commute.
-- **Core pain scene**: *"She opens Duolingo on the Seoul Line 2 to Gangnam every morning, but two weeks before the test she opens a real past TOPIK paper and doesn't recognize 70% of the vocabulary. She tries Migii and finds two wrong answer keys in a single set. It's now too late to enroll at KOKOA (¥9,800/yr). She panics."*
+- **Core pain scene**: *"She opens a Korean learning app on the Seoul Line 2 to Gangnam every morning, but two weeks before the test she opens a real past TOPIK paper and doesn't recognize 70% of the vocabulary. The flashcard apps she's been using were built by non-native speakers, and she keeps hitting typos and wrong answer keys. Korean language academies are too expensive and don't fit her commuter schedule. She panics."*
 - **Existing solution limitations**:
-  - Duolingo is built for casual conversation — its coverage of TOPIK-level exam vocabulary is shallow.
-  - Migii has the exam content but ships with wrong answer keys (documented in Play Store 1-star reviews).
-  - Korean language academies like KOKOA (¥9,800/yr) are expensive, passive, and not schedule-friendly for commuters.
+  - General Korean learning apps are built for casual conversation — their coverage of TOPIK-level exam vocabulary is shallow.
+  - Most "TOPIK prep" apps are built by non-native speakers and ship with typos, wrong answer keys, and mistranslated definitions.
+  - Korean language academies are expensive, passive, and not schedule-friendly for commuters.
 - **3 core features (1:1 mapped to pains)**:
   1. **7,970 quizzes built from real past TOPIK exams** (4 quiz types) → *solves the coverage pain*.
   2. **SM-2 spaced-repetition scheduler** that surfaces a word only when you're about to forget it → *solves the 30–60 minute time budget pain*.
-  3. **krdict-sourced definitions and example sentences from 국립국어원 (National Institute of Korean Language)** → *solves the wrong-answer / trust pain*.
-- **Positioning (1 sentence)**: *"For foreigners prepping TOPIK 3+, TOPIK Note drills the exact words from real TOPIK exams on a spaced-repetition schedule — not random Duolingo flashcards or buggy Migii answers."*
+  3. **Every word reviewed and verified by native Korean speakers**, sourced from 국립국어원 (National Institute of Korean Language) → *solves the wrong-answer / trust pain caused by apps built by non-native speakers — this is the core differentiator*.
+- **Positioning (1 sentence)**: *"For foreigners prepping TOPIK 3+, TOPIK Note drills the exact words from real TOPIK exams on a spaced-repetition schedule — with every word reviewed and verified by native Korean speakers."*
 - **Before / After**:
-  - *Before*: 40 minutes on Duolingo daily for 3 months → sits the exam → 70% of words unfamiliar.
-  - *After*: 25 minutes on TOPIK Note daily for 3 months → sits the exam → ≥80% of words already seen, most with 3+ exposures on the SRS schedule.
+  - *Before*: 40 minutes a day on a generic Korean learning app for 3 months → sits the exam → 70% of words unfamiliar.
+  - *After*: 25 minutes a day on TOPIK Note for 3 months → sits the exam → ≥80% of words already seen, most with 3+ exposures on the SRS schedule.
 
 ---
 
@@ -80,7 +80,7 @@ Core value moment: **S6**. Everything else is funnel.
 | i. Four quiz types + SM-2 SRS                          | Core "learn the right words at the right time" claim. |
 | ii. Free 20-new-words / day quota                      | Lets external evaluator experience the product with no signup. |
 | iii. Level test **and** manual level select            | Reduces onboarding friction (persona can skip test). |
-| iv. 7,970 krdict-sourced quizzes across TOPIK 1–6      | Makes "real exam words, not random" claim verifiable. |
+| iv. 7,970 quizzes across TOPIK 1–6, all reviewed by native Korean speakers | Makes the "real exam words, Korean-vetted" claim verifiable. |
 | v. 5 UI locales (en / ko / ja / vi / zh)               | Aligns with persona's Southeast Asian + East Asian distribution. |
 
 **Out (next version, conditional):**
@@ -101,7 +101,7 @@ Two assumptions that kill the product if wrong.
 
 ### Assumption 1 — Business
 
-> "Foreigners preparing for TOPIK (visa / study / work) will pay for an exam-specific tool that competes with Duolingo + Migii + Korean academies."
+> "Foreigners preparing for TOPIK (visa / study / work) will pay for an exam-specific tool that is built and verified by native Korean speakers, instead of generic Korean apps or non-native-built TOPIK prep apps."
 
 - **Why critical**: If the answer is "they'll just use free options," every feature investment is wasted.
 - **Validation method**: 4-week post-launch cohort, measured on PostHog.
@@ -121,7 +121,7 @@ Two assumptions that kill the product if wrong.
 
 ## 5. MVP URL
 
-- **Primary**: https://topik-note.com — landing with CTAs to the App Store / Play Store listings.
+- **Primary (submission landing)**: https://luke-gu.github.io/topik-note-demo/ — landing with CTAs to the App Store / Play Store listings.
 - **Native app**:
   - iOS: *App Store link (pending final live URL; current TestFlight during review)*
   - Android: *Google Play link (pending final live URL; current internal testing)*
@@ -134,9 +134,9 @@ The native apps are the functional MVP. The landing page satisfies the "URL + mo
 ## 6. Consistency Check (against Solopreneur criteria)
 
 - [x] Three deliverables describe the **same persona** (foreign TOPIK 3+ prepper, 30–60 min commute learner).
-- [x] Three deliverables describe the **same 3 core features** (real exam words / SM-2 SRS / krdict).
+- [x] Three deliverables describe the **same 3 core features** (real exam words / SM-2 SRS / Korean-native-verified vocabulary).
 - [x] "Core assumptions & validation" section present (Section 4) with numeric success metrics.
-- [x] MVP URL live and functional (topik-note.com, App Store, Play Store).
+- [x] MVP URL live and functional (luke-gu.github.io/topik-note-demo, App Store, Play Store).
 - [x] Each feature maps 1:1 to a pain point.
 - [x] Positioning is a single sentence of the form "For X, Y, why Z."
 - [x] ≥ 1 testimonial shown on the landing page (social-proof section).

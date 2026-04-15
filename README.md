@@ -2,42 +2,56 @@
 
 평가 기준: https://udpb.github.io/ai-solopreneur/criteria.html
 
+**Live URL**: https://luke-gu.github.io/topik-note-demo/
+**Repo**: https://github.com/Luke-GU/topik-note-demo
+**Contact**: codelue01@gmail.com
+
 ## 3 Deliverables
 
 | # | Deliverable | File(s) | Notes |
 | - | ----------- | ------- | ----- |
-| 1 | Landing Page (EN primary, KO sync) | `landing/index.html`, `landing/index.ko.html`, `landing/styles.css`, `landing/screenshots/*.png` | Persona + pain + 3 features (1:1) + before/after + testimonial + CTA. 자체 포함 (외부 의존성 없음). |
+| 1 | Landing Page (EN primary, KO sync) | `index.html`, `index.ko.html`, `styles.css`, `screenshots/*.png` | Persona + pain + 3 features (1:1) + before/after + testimonial + CTA. 자체 포함. |
 | 2 | 1-Page PRD | `PRD.md` | User flow / screen list / MVP scope / core assumptions & validation. Canonical copy가 Section 0. |
-| 3 | MVP URL | https://topik-note.com + App Store / Play Store | 랜딩이 두 경로 CTA 모두 노출. 무설치 웹 데모는 backlog (PRD §3 "Out"). |
+| 3 | MVP URL | https://luke-gu.github.io/topik-note-demo/ + App Store / Play Store | 랜딩에 두 경로 CTA 노출. 무설치 웹 데모는 backlog (PRD §3 "Out"). |
 
 ## Local preview
 
 ```bash
-open landing/index.html
-open landing/index.ko.html
+open index.html
+open index.ko.html
 ```
 
-GitHub/VS Code에서 `PRD.md`는 마크다운 프리뷰로 바로 확인 가능.
+GitHub/VS Code에서 `PRD.md`는 마크다운 프리뷰로 바로 확인.
+
+## Differentiation (핵심 차별점)
+
+> **모든 단어와 뜻풀이를 한국인 원어민이 직접 검수**하여 TOPIK 응시에 최적화. 외국인 제작진이 만든 기존 TOPIK 앱들에서 흔한 오기입·잘못된 정답·어색한 번역이 없음.
+
+이 메시지가 landing(EN/KO) hero · feature 3 · PRD §0 canonical copy 3곳에서 동일한 톤으로 반복됨.
 
 ## Before submitting (TODO)
 
-- [ ] `landing/index.html`과 `index.ko.html`의 **Testimonial 섹션**에 실제 베타 테스터 / App Store 리뷰 인용문 **최소 1개** 삽입. 현재 샘플 text는 placeholder 주석 위치에 있음.
-- [ ] App Store / Google Play 최종 URL 확정 후 `index.html`과 `index.ko.html`의 `href`를 실제 URL로 치환 (현재 플레이스홀더 URL). grep으로 확인: `grep -n "apps.apple.com\|play.google.com" landing/*.html`.
-- [ ] PRD §5 MVP URL 섹션의 iOS/Android 라인에 최종 URL 기입.
-- [ ] (선택) 로컬 브라우저 모바일 뷰포트로 반응형 확인 (DevTools iPhone 14 프리셋).
+- [ ] **Testimonial 실제 인용문** — `index.html`·`index.ko.html`의 testimonial 섹션 placeholder를 베타 테스터 / App Store 리뷰 인용문(최소 1개)로 교체.
+- [ ] **App Store / Google Play 최종 URL** — 현재 플레이스홀더 4곳. 검색: `grep -n "apps.apple.com\|play.google.com" *.html`
+- [ ] **PRD §5 MVP URL** 섹션의 iOS/Android 라인에 실제 URL 기입.
+- [ ] (선택) 모바일 뷰포트 반응형 확인 (DevTools iPhone 14 프리셋).
 
 ## Consistency matrix
 
-세 산출물이 **같은 persona / 같은 3 feature / 같은 positioning**을 공유함을 보장:
+| 항목 | Landing (EN/KO) | PRD |
+| --- | --- | --- |
+| Persona | "Who this is for" 섹션 | §0 Canonical, §4 Assumption 1 |
+| 3 core features | "Three things TOPIK Note does" | §0 · §3 In |
+| Positioning 1-liner | Hero subhead | §0 |
+| Korean-native verification 차별점 | Hero · Feature 3 | §0 feature 3 · §4 Assumption 1 |
 
-| 항목 | Landing (EN/KO) | PRD | App Store metadata |
-| --- | --- | --- | --- |
-| Persona | "Who this is for" | §0 Canonical, §4 Assumption 1 | (동일 타깃 — 영문/한국어/일본어/베트남어/중국어 5 언어 지원) |
-| 3 core features | "Three things TOPIK Note does" | §0 · §3 In | `store-metadata/en.md` description 본문 |
-| Positioning 1-liner | Hero subhead | §0 | Promo text |
+## Deploying updates
 
-## Source material
+```bash
+cd ~/Documents/topik-note-submission
+git add -A
+git commit -m "<message>"
+git push
+```
 
-- 원 성장 전략 문서: `/Users/geonwoo/Documents/kil/topik-note-growth-strategy.md`
-- 앱 스토어 카피: `/Users/geonwoo/Documents/kil/apps/mobile/store-metadata/en.md`
-- 스크린샷 원본: `/Users/geonwoo/Documents/kil/apps/mobile/store-screenshots/` (이 폴더 `landing/screenshots/`로 복사됨)
+GitHub Pages 자동 재빌드 (~1분).
