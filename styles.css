@@ -281,6 +281,30 @@ img { max-width: 100%; display: block; }
   border: 1px solid var(--border);
 }
 
+/* Also built in */
+.also-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+.also-item {
+  padding: 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+}
+.also-item strong {
+  display: block;
+  font-size: 1.05rem;
+  margin-bottom: 0.4rem;
+}
+.also-item p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
 /* Compare */
 .compare-grid {
   display: grid;
