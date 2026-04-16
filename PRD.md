@@ -1,142 +1,142 @@
 # TOPIK Note — 1-Page PRD
 
-**Product**: TOPIK Note (iOS · Android)
-**Landing**: https://luke-gu.github.io/topik-note-demo/
-**Date**: 2026-04-15
-**Creator**: GEONWOO JUNG · codelue01@gmail.com
+**제품**: TOPIK Note (iOS · Android)
+**랜딩**: https://luke-gu.github.io/topik-note-demo/
+**작성일**: 2026-04-16
+**제작자**: GEONWOO JUNG · codelue01@gmail.com
 
 ---
 
-## 0. Canonical Copy (shared across Landing / PRD / App Store)
+## 0. 캐노니컬 카피 (랜딩 / PRD / 앱스토어 공유)
 
-- **Target persona (1 sentence)**: Foreign adult learners who must pass TOPIK level 3 or higher within 3–6 months for a student visa, work permit, or graduate admission, and who can only study 30–60 minutes a day during their commute.
-- **Core pain scene**: *"She opens a Korean learning app on the Seoul Line 2 to Gangnam every morning, but two weeks before the test she opens a real past TOPIK paper and doesn't recognize 70% of the vocabulary. The flashcard apps she's been using were built by non-native speakers, and she keeps hitting typos and wrong answer keys. Korean language academies are too expensive and don't fit her commuter schedule. She panics."*
-- **Existing solution limitations**:
-  - General Korean learning apps are built for casual conversation — their coverage of TOPIK-level exam vocabulary is shallow.
-  - Most "TOPIK prep" apps are built by non-native speakers and ship with typos, wrong answer keys, and mistranslated definitions.
-  - Korean language academies are expensive, passive, and not schedule-friendly for commuters.
-- **3 core features (1:1 mapped to pains)**:
-  1. **7,970 quizzes built from real past TOPIK exams** (4 quiz types) → *solves the coverage pain*.
-  2. **SM-2 spaced-repetition scheduler** that surfaces a word only when you're about to forget it → *solves the 30–60 minute time budget pain*.
-  3. **Every word reviewed and verified by native Korean speakers**, sourced from 국립국어원 (National Institute of Korean Language) → *solves the wrong-answer / trust pain caused by apps built by non-native speakers — this is the core differentiator*.
-- **Positioning (1 sentence)**: *"For foreigners prepping TOPIK 3+, TOPIK Note drills the exact words from real TOPIK exams on a spaced-repetition schedule — with every word reviewed and verified by native Korean speakers."*
+- **타깃 페르소나 (1문장)**: 유학·취업·비자 목적으로 3~6개월 안에 TOPIK 3급 이상을 따야 하는 외국인 성인 학습자. 하루 중 학습에 쓸 수 있는 시간은 출퇴근 30~60분뿐이다.
+- **핵심 고통 장면**: *"매일 아침 지하철에서 한국어 앱을 켠다. 시험 2주 전에야 실제 기출 시험지를 펼쳤는데 단어의 70%가 처음 본다. 써봤던 앱들은 대부분 외국인 제작진이 만들어 오기입과 잘못된 정답이 많았고, 한국어 학원은 비싸고 시간표도 맞지 않는다. 남은 것은 낭비한 시간과 불안."*
+- **기존 대안의 한계**:
+  - 일반 한국어 학습 앱은 회화 중심이라 TOPIK 시험 어휘 커버리지가 얕다.
+  - "TOPIK 대비"를 표방하는 앱 대부분은 외국인 제작진이 만든 것이라 오기입·잘못된 정답·어색한 번역이 자주 발견된다.
+  - 한국어 학원은 비싸고, 수동적이고, 출퇴근 학습자 일정에 맞지 않는다.
+- **3 핵심 기능 (고통 1:1 매핑)**:
+  1. **실제 TOPIK 기출 7,970문제 + 4가지 퀴즈 유형** → *커버리지 부족 해결*
+  2. **9단계 간격 반복 학습(SM-2 기반)** — 맞히면 4시간→1일→3일→1주→2주→1달→2달→4달(마스터). 틀리면 1시간 후 재출제 → *30~60분 시간 효율 해결*
+  3. **모든 단어를 한국인 원어민이 직접 검수**, 국립국어원 krdict 공식 데이터 기반 → *외국인 제작 앱의 오기입·오답·신뢰 문제 해결 — 핵심 차별점*
+- **포지셔닝 (1문장)**: *"TOPIK 3급 이상을 노리는 외국인 학습자를 위한 앱. 실제 기출 단어를 간격 반복 스케줄로 학습하며, 모든 단어는 한국인 원어민이 직접 검수했다."*
 - **Before / After**:
-  - *Before*: 40 minutes a day on a generic Korean learning app for 3 months → sits the exam → 70% of words unfamiliar.
-  - *After*: 25 minutes a day on TOPIK Note for 3 months → sits the exam → ≥80% of words already seen, most with 3+ exposures on the SRS schedule.
+  - *Before*: 하루 40분씩 일반 한국어 앱으로 3개월 학습 → 시험장에서 단어 70%가 낯설다.
+  - *After*: 하루 25분씩 TOPIK Note로 3개월 학습 → 시험장에서 단어 80% 이상이 이미 본 것 (대부분 SRS 스케줄상 3회+ 노출).
 
 ---
 
-## 1. User Flow with Branching
+## 1. 사용자 플로우 (분기 포함)
 
-Two journeys. They intersect at the **Home Hub (S3)** and value is delivered in the **Study Session (S6)**.
+두 개의 여정. **홈 허브(S3)** 에서 합류하고, 핵심 가치는 **학습 세션(S6)** 에서 전달된다.
 
 ```
-J1 — First-time learner
-  S1 Welcome
-    └─▶ S2 Level choice ─┬─▶ S2a Level test (20 Q, auto-classify TOPIK 1/3/5)
-                         └─▶ S2b Manual select (pick 1-2 / 3-4 / 5-6)
-                              └─▶ S3 Home Hub ◀── J2 joins here
-                                   │
-                                   ├─ free: 20-new-words/day quota ──▶ S8 Paywall at quota hit
-                                   └─ premium: unlimited ──▶ S6 Study Session ★ CORE VALUE
-                                                              └─▶ S7 Result
+J1 — 신규 학습자
+  S1 웰컴
+    └─▶ S2 레벨 선택 ─┬─▶ S2a 레벨 테스트 (20문항, TOPIK 1/3/5 자동 분류)
+                      └─▶ S2b 직접 선택 (1-2급 / 3-4급 / 5-6급)
+                           └─▶ S3 홈 허브 ◀── J2 합류 지점
+                                │
+                                ├─ 무료: 하루 새 단어 20개 제한 ──▶ S8 페이월 (제한 도달 시)
+                                └─ 프리미엄: 무제한 ──▶ S6 학습 세션 ★ 핵심 가치
+                                                        └─▶ S7 결과
 
-J2 — Returning learner
-  S3 Home Hub ─▶ S6 Study Session (SRS queue today) ─▶ S7 Result ─▶ (optional) S4 Stats
+J2 — 복귀 학습자
+  S3 홈 허브 ─▶ S6 학습 세션 (오늘의 SRS 큐) ─▶ S7 결과 ─▶ (선택) S4 통계
 ```
 
-**Branching conditions**:
-- `isOnboarded === false` → J1 path, else J2.
-- `premium === false && remainingNewWords <= 0` → Paywall (S8) overlays S3/S6.
-- Stats (S4) charts are locked behind premium (PremiumLockOverlay).
+**분기 조건**:
+- `isOnboarded === false` → J1 경로, 아니면 J2.
+- `premium === false && 남은 새 단어 ≤ 0` → 페이월(S8)이 S3/S6 위에 오버레이.
+- 통계(S4) 차트는 프리미엄 잠금 (PremiumLockOverlay).
 
 ---
 
-## 2. Screen List
+## 2. 화면 목록
 
-| ID  | Name               | User objective (verb phrase)                 | Core components |
-| --- | ------------------ | -------------------------------------------- | --------------- |
-| S1  | Welcome            | Accept terms and enter the app               | Hero copy, Start button |
-| S2  | Level choice       | Decide how to set starting level             | 2 choice cards (test / manual) |
-| S2a | Level test         | Prove TOPIK level with 20 questions          | QuizChoices, ProgressBar |
-| S2b | Manual level select| Pick a TOPIK tier (1-2 / 3-4 / 5-6)          | Tier cards |
-| S3  | Home Hub (tabs/index) | Start today's study and see daily quota   | Quota card, 4 action buttons |
-| S4  | Stats              | Review streak, accuracy, and weak points     | BarChart, LineChart, PremiumLockOverlay |
-| S5  | Settings           | Change language, notifications, legal        | SettingsRow list |
-| **S6** | **Study Session** | **Answer quizzes and bank learning**     | **QuizChoices, WordCard, SessionProgress** |
-| S7  | Result             | Review session outcome and next review date  | Summary, CTA to continue |
-| S8  | Paywall            | Unlock unlimited + full stats                | SKU cards (Lifetime / Annual / Monthly) |
+| ID  | 화면명              | 사용자 목적 (동사구)                          | 핵심 컴포넌트 |
+| --- | ------------------- | --------------------------------------------- | ------------- |
+| S1  | 웰컴               | 약관 동의 후 앱 진입                          | 히어로 카피, 시작 버튼 |
+| S2  | 레벨 선택           | 시작 레벨 설정 방법 결정                       | 2개 선택 카드 (테스트 / 직접 선택) |
+| S2a | 레벨 테스트         | 20문항으로 TOPIK 레벨 증명                    | QuizChoices, ProgressBar |
+| S2b | 직접 레벨 선택      | TOPIK 급수 직접 선택 (1-2 / 3-4 / 5-6)        | 급수 카드 |
+| S3  | 홈 허브             | 오늘의 학습 시작 + 일일 할당량 확인            | 할당량 카드, 4개 액션 버튼 |
+| S4  | 통계               | 스트릭·정답률·취약 부분 확인                   | BarChart, LineChart, PremiumLockOverlay |
+| S5  | 설정               | 언어·알림·법적 정보 변경                       | SettingsRow 리스트 |
+| **S6** | **학습 세션**    | **퀴즈를 풀고 학습 성과 기록**                 | **QuizChoices, WordCard, SessionProgress** |
+| S7  | 결과               | 세션 결과 + 다음 복습 일정 확인                | 요약, 계속하기 CTA |
+| S8  | 페이월             | 무제한 학습 + 전체 통계 해제                   | SKU 카드 (Lifetime / Annual / Monthly) |
 
-Core value moment: **S6**. Everything else is funnel.
-
----
-
-## 3. MVP Scope
-
-**In (must-have for the claim on the landing page to be true):**
-
-| Item                                                   | 1-line justification |
-| ------------------------------------------------------ | -------------------- |
-| i. Four quiz types + SM-2 SRS                          | Core "learn the right words at the right time" claim. |
-| ii. Free 20-new-words / day quota                      | Lets external evaluator experience the product with no signup. |
-| iii. Level test **and** manual level select            | Reduces onboarding friction (persona can skip test). |
-| iv. 7,970 quizzes across TOPIK 1–6, all reviewed by native Korean speakers | Makes the "real exam words, Korean-vetted" claim verifiable. |
-| v. 5 UI locales (en / ko / ja / vi / zh)               | Aligns with persona's Southeast Asian + East Asian distribution. |
-
-**Out (next version, conditional):**
-
-- **Mock exam mode** (full 40-question simulated TOPIK test) — *after* we confirm ≥ X% lifetime conversion on vocab alone.
-- **Pronunciation AI** (STT + accuracy scoring) — *after* the current TTS fallback path is stable across all 5 locales.
-- **Social leaderboard / streak sharing** — *after* DAU reaches a level where social proof improves retention.
-- **No-install web demo (5-question quiz)** — *after* landing conversion baseline is measured; treated as a marketing MVP, not a product surface.
-
-**Completion criteria (external-user threshold):**
-*"A first-time external evaluator can open the app without instructions, pick a level in ≤ 60 seconds, and answer 5 TOPIK vocabulary questions in a session they understand without reading any help text."*
+핵심 가치 전달 화면: **S6**. 나머지는 퍼널.
 
 ---
 
-## 4. Core Assumptions & Validation
+## 3. MVP 범위
 
-Two assumptions that kill the product if wrong.
+**In (랜딩 페이지의 주장이 사실이려면 반드시 필요):**
 
-### Assumption 1 — Business
+| 항목                                                           | 근거 (1줄) |
+| -------------------------------------------------------------- | ---------- |
+| i. 4가지 퀴즈 유형 + 9단계 SM-2 간격 반복                       | "적시에 맞는 단어를 학습" 주장의 근간. |
+| ii. 무료 하루 새 단어 20개                                       | 외부 평가자가 가입 없이 제품 체험 가능. |
+| iii. 레벨 테스트 **및** 직접 레벨 선택                           | 온보딩 마찰 감소 (테스트 건너뛰기 가능). |
+| iv. 한국인 원어민 검수 완료 기출 7,970문제 (TOPIK 1~6급)          | "진짜 기출 단어, 한국인 검수" 주장 검증 가능. |
+| v. 4개 UI 언어 (en / ja / vi / zh)                               | 동남아·동아시아 타깃 시장 일치. 한국어 UI는 production에서 제거 — 타깃이 외국인이므로. |
 
-> "Foreigners preparing for TOPIK (visa / study / work) will pay for an exam-specific tool that is built and verified by native Korean speakers, instead of generic Korean apps or non-native-built TOPIK prep apps."
+**Out (다음 버전, 조건부):**
 
-- **Why critical**: If the answer is "they'll just use free options," every feature investment is wasted.
-- **Validation method**: 4-week post-launch cohort, measured on PostHog.
-- **Success metric**: Paywall-view → IAP-purchase conversion rate ≥ **2%** on the lifetime SKU within the first 4 weeks, across ≥ 300 paywall views.
-- **Data source**: `paywall_view` → `iap_purchase_success` funnel in PostHog (already instrumented via `EXPO_PUBLIC_POSTHOG_API_KEY`).
+- **모의기출 모드** (40문항 실전 시뮬레이션) — 단어 학습만으로 lifetime 전환율 ≥ X% 확인 후.
+- **발음 AI** (STT + 정확도 채점) — 현 TTS fallback이 4개 언어에서 안정화된 후.
+- **소셜 리더보드 / 스트릭 공유** — DAU가 소셜 증거가 리텐션 향상에 기여하는 수준에 도달한 후.
+- **무설치 웹 데모 (5문항 퀴즈)** — 랜딩 전환율 기준선 측정 후. 마케팅 MVP로 분류.
 
-### Assumption 2 — Technical
+**완료 기준 (외부 사용자 기준):**
+*"처음 보는 외부 평가자가 안내 없이 앱을 열고, 60초 안에 레벨을 선택하고, 도움말 없이 이해 가능한 세션에서 TOPIK 단어 퀴즈 5문항을 풀 수 있다."*
 
-> "Our SM-2 SRS schedule produces meaningful retention for typical learners (not just experts), so the coverage claim becomes a real learning outcome — not just exposure."
+---
 
-- **Why critical**: If retention is weak, learners will recognize words but fail the exam anyway, and the app's core promise breaks.
-- **Validation method**: Cohort analysis on `wordProgress.correctStreak` 30 days after first session.
-- **Success metric**: Median 30-day cohort has `correctStreak ≥ 4` (mastered to SRS box 4+) on ≥ **70%** of the words they've seen at least twice.
-- **Data source**: `apps/mobile/lib/progress-repository.ts` export → PostHog cohort tables.
+## 4. 핵심 가정 및 검증
+
+틀리면 제품이 죽는 2개의 가정.
+
+### 가정 1 — 비즈니스
+
+> "비자·유학·취업 목적의 TOPIK 준비자는, 일반 한국어 앱이나 외국인이 만든 TOPIK 앱 대신, 한국인이 직접 검수한 시험 특화 도구에 비용을 지불할 의향이 있다."
+
+- **왜 치명적인가**: 답이 "무료 옵션으로 충분"이면 모든 기능 투자가 낭비.
+- **검증 방법**: 출시 후 4주 코호트, PostHog로 측정.
+- **성공 지표**: 페이월 노출 → IAP 구매 전환율 ≥ **2%** (lifetime SKU 기준, 4주 이내, 페이월 노출 ≥ 300회).
+- **데이터 소스**: `paywall_view` → `iap_purchase_success` 퍼널 (PostHog, 이미 계측됨).
+
+### 가정 2 — 기술
+
+> "SM-2 간격 반복 스케줄이 일반 학습자에게도 70% 이상의 기억 유지율을 만들어, 커버리지 주장이 실제 학습 성과로 이어진다."
+
+- **왜 치명적인가**: 기억 유지가 약하면, 학습자가 단어를 "봤다"지만 시험에서 떠올리지 못함 → 핵심 약속 붕괴.
+- **검증 방법**: 첫 세션 후 30일차 코호트의 `wordProgress.correctStreak` 분석.
+- **성공 지표**: 30일 코호트 중앙값이 2회 이상 노출된 단어의 ≥ **70%**에서 `correctStreak ≥ 4` (SRS 4단계 이상 도달).
+- **데이터 소스**: `progress-repository.ts` export → PostHog 코호트 테이블.
 
 ---
 
 ## 5. MVP URL
 
-- **Primary (submission landing)**: https://luke-gu.github.io/topik-note-demo/ — landing with CTAs to the App Store / Play Store listings.
-- **Native app**:
-  - iOS: *App Store link (pending final live URL; current TestFlight during review)*
-  - Android: *Google Play link (pending final live URL; current internal testing)*
-- **Web demo (5-question quiz)**: on backlog — see "Out" above.
+- **제출용 랜딩**: https://luke-gu.github.io/topik-note-demo/ — 데모 신청 CTA 포함.
+- **네이티브 앱**:
+  - iOS: *App Store 링크 (최종 URL 확정 대기 중, 현재 TestFlight 심사 중)*
+  - Android: *Google Play 링크 (최종 URL 확정 대기 중, 현재 내부 테스트 중)*
+- **웹 데모 (5문항 퀴즈)**: 백로그 — 위 "Out" 참조.
 
-The native apps are the functional MVP. The landing page satisfies the "URL + mobile browser compatible" criterion by presenting the persona / pain / solution / CTA within a viewport; install required for the full 30-second core-value experience.
+네이티브 앱이 기능적 MVP. 랜딩은 모바일 뷰포트에서 persona / pain / solution / CTA를 제시하여 "URL + 모바일 브라우저 호환" 기준을 충족. 30초 핵심 가치 체험은 앱 설치 필요.
 
 ---
 
-## 6. Consistency Check (against Solopreneur criteria)
+## 6. 일관성 체크 (AI Solopreneur 평가 기준 대조)
 
-- [x] Three deliverables describe the **same persona** (foreign TOPIK 3+ prepper, 30–60 min commute learner).
-- [x] Three deliverables describe the **same 3 core features** (real exam words / SM-2 SRS / Korean-native-verified vocabulary).
-- [x] "Core assumptions & validation" section present (Section 4) with numeric success metrics.
-- [x] MVP URL live and functional (luke-gu.github.io/topik-note-demo, App Store, Play Store).
-- [x] Each feature maps 1:1 to a pain point.
-- [x] Positioning is a single sentence of the form "For X, Y, why Z."
-- [x] ≥ 1 testimonial shown on the landing page (social-proof section).
+- [x] 3개 deliverable이 **같은 페르소나**를 묘사 (TOPIK 3급+ 외국인, 출퇴근 30~60분 학습자).
+- [x] 3개 deliverable이 **같은 3 핵심 기능**을 묘사 (기출 단어 / 9단계 간격 반복 / 한국인 원어민 검수).
+- [x] "핵심 가정 및 검증" 섹션 존재 (§4), 수치 성공 지표 포함.
+- [x] MVP URL 작동 (luke-gu.github.io/topik-note-demo, App Store, Play Store).
+- [x] 각 기능이 고통과 1:1로 매핑됨.
+- [x] 포지셔닝이 "For X, Y, why Z" 형식의 1문장.
+- [x] 랜딩 페이지에 ≥ 1개 사용자 후기 (social proof 섹션).
