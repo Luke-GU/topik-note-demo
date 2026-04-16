@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TOPIK Note — Try It Now</title>
+  <style>
+    :root {
+      --fg: #1e293b;
+      --muted: #64748b;
+      --bg: #ffffff;
+      --surface: #f8fafc;
+      --border: #e2e8f0;
+      --primary: #3182f6;
+      --primary-hover: #2563eb;
+      --green: #22c55e;
+      --green-bg: #ecfdf5;
+      --green-border: #a7f3d0;
+      --red: #ef4444;
+      --red-bg: #fef2f2;
+      --red-border: #fecaca;
+      --radius: 12px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Noto Sans KR", "Segoe UI", sans-serif;
+      color: var(--fg);
+      background: var(--surface);
+      min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      -webkit-font-smoothing: antialiased;
+    }
+    .phone {
+      width: 100%;
+      max-width: 420px;
+      min-height: 100dvh;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+    }
+    @media (min-width: 500px) {
+      .phone {
+        min-height: auto;
+        height: 780px;
+        border-radius: 28px;
+        box-shadow: 0 30px 60px -20px rgba(30,41,59,0.25);
+        overflow: hidden;
+        margin: 2rem 1rem;
+      }
+    }
+    .screen {
+      display: none;
+      flex-direction: column;
+      flex: 1;
+      padding: 2rem 1.5rem;
+      overflow-y: auto;
+    }
+    .screen.active { display: flex; }
+    .screen-header {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+    h1 { font-size: 1.65rem; line-height: 1.25; letter-spacing: -0.02em; margin-bottom: 0.75rem; }
+    h2 { font-size: 1.35rem; line-height: 1.3; margin-bottom: 0.5rem; }
+    p.sub { color: var(--muted); font-size: 0.95rem; margin-bottom: 1.5rem; }
+    .spacer { flex: 1; }
+
+    /* Level select */
+    .level-btn {
+      display: block;
+      width: 100%;
+      padding: 1rem 1.25rem;
+      margin-bottom: 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg);
+      text-align: left;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 1rem;
+      color: var(--fg);
+      transition: border-color 0.12s, transform 0.12s;
+    }
+    .level-btn:hover { border-color: var(--primary); transform: translateY(-1px); }
+    .level-btn strong { display: block; font-size: 1.05rem; margin-bottom: 0.15rem; }
+    .level-btn span { color: var(--muted); font-size: 0.85rem; }
+
+    /* Progress */
+    .progress-bar { height: 4px; background: var(--border); border-radius: 2px; margin-bottom: 1.5rem; overflow: hidden; }
+    .progress-fill { height: 100%; background: var(--primary); transition: width 0.3s ease; border-radius: 2px; }
+    .q-counter { font-size: 0.85rem; color: var(--muted); margin-bottom: 0.5rem; }
+
+    /* Word display */
+    .word-display {
+      text-align: center;
+      padding: 1.5rem 0 0.5rem;
+    }
+    .word-korean {
+      font-size: 2.2rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.25rem;
+    }
+    .word-pos {
+      display: inline-block;
+      font-size: 0.8rem;
+      color: var(--primary);
+      background: rgba(49,130,246,0.08);
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      margin-bottom: 0.25rem;
+    }
+    .word-prompt {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Choices */
+    .choice-btn {
+      display: block;
+      width: 100%;
+      padding: 0.85rem 1rem;
+      margin-bottom: 0.6rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg);
+      text-align: left;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.95rem;
+      color: var(--fg);
+      transition: border-color 0.12s, background 0.12s;
+      line-height: 1.4;
+    }
+    .choice-btn:hover:not(.answered) { border-color: var(--primary); }
+    .choice-btn.correct { border-color: var(--green); background: var(--green-bg); color: var(--green); font-weight: 600; }
+    .choice-btn.wrong { border-color: var(--red); background: var(--red-bg); color: var(--red); }
+    .choice-btn.answered { cursor: default; }
+    .choice-btn.answered:not(.correct):not(.wrong) { opacity: 0.5; }
+
+    /* Feedback */
+    .feedback {
+      text-align: center;
+      padding: 0.75rem 0;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+    .feedback.correct-fb { color: var(--green); }
+    .feedback.wrong-fb { color: var(--red); }
+
+    /* Next button */
+    .next-btn {
+      display: block;
+      width: 100%;
+      padding: 0.85rem;
+      border: none;
+      border-radius: var(--radius);
+      background: var(--primary);
+      color: white;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: auto;
+      transition: background 0.12s;
+    }
+    .next-btn:hover { background: var(--primary-hover); }
+    .next-btn:disabled { background: var(--border); cursor: default; }
+
+    /* Result */
+    .result-score {
+      text-align: center;
+      padding: 2rem 0 1rem;
+    }
+    .result-number {
+      font-size: 3.5rem;
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1;
+    }
+    .result-label { color: var(--muted); font-size: 1rem; margin-top: 0.25rem; }
+    .result-msg {
+      text-align: center;
+      font-size: 1.05rem;
+      color: var(--fg);
+      margin: 1rem 0 1.5rem;
+      line-height: 1.5;
+    }
+    .result-detail {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+    }
+    .result-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.65rem 1rem;
+      font-size: 0.9rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .result-row:last-child { border-bottom: none; }
+    .result-row .r-word { font-weight: 600; }
+    .r-correct { color: var(--green); }
+    .r-wrong { color: var(--red); }
+
+    .cta-link {
+      display: block;
+      text-align: center;
+      color: var(--primary);
+      text-decoration: none;
+      font-size: 0.95rem;
+      margin-top: 0.75rem;
+    }
+    .cta-link:hover { text-decoration: underline; }
+
+    .mastery-note {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .mastery-note strong { color: var(--fg); }
+  </style>
+</head>
+<body>
+  <div class="phone">
+    <!-- Screen: Level Select -->
+    <div class="screen active" id="screen-level">
+      <div class="screen-header">TOPIK Note Demo</div>
+      <h1>Choose your TOPIK level</h1>
+      <p class="sub">We'll quiz you on 5 words from real past TOPIK exams.</p>
+      <button class="level-btn" onclick="startQuiz('beginner')">
+        <strong>TOPIK I (Level 1–2)</strong>
+        <span>Beginner — basic greetings, everyday words</span>
+      </button>
+      <button class="level-btn" onclick="startQuiz('intermediate')">
+        <strong>TOPIK II (Level 3–4)</strong>
+        <span>Intermediate — daily life, compound words</span>
+      </button>
+      <button class="level-btn" onclick="startQuiz('advanced')">
+        <strong>TOPIK II (Level 5–6)</strong>
+        <span>Advanced — academic, nuanced vocabulary</span>
+      </button>
+      <div class="spacer"></div>
+      <div class="mastery-note">
+        <strong>In the full app:</strong> each word goes through a 9-stage mastery system.
+        Get it right → review in 4h, 1d, 3d, 1w, 2w, 1mo, 2mo, 4mo. Get it wrong → it returns in 1 hour.
+      </div>
+    </div>
+
+    <!-- Screen: Quiz -->
+    <div class="screen" id="screen-quiz">
+      <div class="q-counter" id="q-counter"></div>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+      <div class="word-display">
+        <div class="word-korean" id="word-korean"></div>
+        <div class="word-pos" id="word-pos"></div>
+        <div class="word-prompt">What does this word mean?</div>
+      </div>
+      <div id="choices"></div>
+      <div class="feedback" id="feedback"></div>
+      <div class="spacer"></div>
+      <button class="next-btn" id="next-btn" disabled onclick="nextQuestion()">Next</button>
+    </div>
+
+    <!-- Screen: Result -->
+    <div class="screen" id="screen-result">
+      <div class="screen-header">Session Complete</div>
+      <div class="result-score">
+        <div class="result-number" id="result-score"></div>
+        <div class="result-label">out of 5 correct</div>
+      </div>
+      <div class="result-msg" id="result-msg"></div>
+      <div class="result-detail" id="result-detail"></div>
+      <div class="mastery-note">
+        <strong>In the full app:</strong> wrong answers return in 1 hour. Words you master space out to 120 days.
+        Every word is reviewed and verified by native Korean speakers.
+      </div>
+      <div class="spacer"></div>
+      <a class="next-btn" href="index.html#thanks" style="text-align:center;text-decoration:none;">Request full demo access</a>
+      <a class="cta-link" href="#" onclick="resetDemo();return false;">Try another level</a>
+    </div>
+  </div>
+
+  <script>
+    const WORDS = {
+      beginner: [
+        { word: "크다", pos: "Adjective", answer: "Large or numerous in size or scale.", wrong: ["To try to benefit or help someone.", "School vacation; holiday.", "Quickly; fast."] },
+        { word: "방학", pos: "Noun", answer: "School vacation; holiday.", wrong: ["Jeans.", "Evening; dinner.", "Large or numerous in size."] },
+        { word: "청바지", pos: "Noun", answer: "Jeans.", wrong: ["Fishing.", "Weekday.", "The duration of the current week."] },
+        { word: "대사관", pos: "Noun", answer: "A diplomatic office established by one country in another.", wrong: ["A place where animals are kept.", "Writing that you're quitting your job.", "Effort."] },
+        { word: "저녁", pos: "Noun", answer: "Evening; dinner.", wrong: ["Parents.", "Newly; not existing before.", "School vacation; holiday."] }
+      ],
+      intermediate: [
+        { word: "사표", pos: "Noun", answer: "A letter of resignation from one's job.", wrong: ["Parents.", "Jeans.", "A lapse of a fairly long time."] },
+        { word: "붉다", pos: "Adjective", answer: "The color is like blood or a ripe red pepper.", wrong: ["Large or numerous in size.", "To be in harmony and unite as one.", "Quickly; fast."] },
+        { word: "출입국", pos: "Noun", answer: "The act of entering or leaving a country.", wrong: ["An inconvenience in using something.", "School vacation; holiday.", "Effort."] },
+        { word: "동물원", pos: "Noun", answer: "A place where animals are collected and kept for people to see.", wrong: ["A diplomatic office in another country.", "A person who leads a team.", "Ordinary times with nothing special."] },
+        { word: "사회생활", pos: "Noun", answer: "Living as a member of society and interacting with others.", wrong: ["A letter of resignation.", "The month before the current month.", "Newly; not existing before."] }
+      ],
+      advanced: [
+        { word: "노력", pos: "Noun", answer: "Effort.", wrong: ["An inconvenience.", "Ordinary times.", "A person who does sports."] },
+        { word: "어울리다", pos: "Verb", answer: "For several things to be in harmony and unite as one.", wrong: ["To try to benefit or help someone.", "The color is like blood.", "Large or numerous in size."] },
+        { word: "한참", pos: "Adverb", answer: "A lapse of a fairly long time.", wrong: ["Newly; not existing before.", "Quickly; fast.", "Evening; dinner."] },
+        { word: "운동선수", pos: "Noun", answer: "A person who does sports as a profession.", wrong: ["A person who leads a team.", "A person who takes part in an event.", "A diplomatic office in another country."] },
+        { word: "불편", pos: "Noun", answer: "An inconvenience in using something.", wrong: ["Effort.", "A lapse of a fairly long time.", "Living as a member of society."] }
+      ]
+    };
+
+    let currentLevel = "";
+    let currentQuestions = [];
+    let currentIndex = 0;
+    let score = 0;
+    let results = [];
+
+    function show(id) {
+      document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+      document.getElementById(id).classList.add("active");
+    }
+
+    function shuffle(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function startQuiz(level) {
+      currentLevel = level;
+      currentQuestions = shuffle(WORDS[level]);
+      currentIndex = 0;
+      score = 0;
+      results = [];
+      show("screen-quiz");
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      const q = currentQuestions[currentIndex];
+      document.getElementById("q-counter").textContent = (currentIndex + 1) + " / 5";
+      document.getElementById("progress-fill").style.width = ((currentIndex) / 5 * 100) + "%";
+      document.getElementById("word-korean").textContent = q.word;
+      document.getElementById("word-pos").textContent = q.pos;
+      document.getElementById("feedback").textContent = "";
+      document.getElementById("feedback").className = "feedback";
+      document.getElementById("next-btn").disabled = true;
+
+      const choices = shuffle([q.answer, ...q.wrong]);
+      const container = document.getElementById("choices");
+      container.innerHTML = "";
+      choices.forEach(c => {
+        const btn = document.createElement("button");
+        btn.className = "choice-btn";
+        btn.textContent = c;
+        btn.onclick = () => selectAnswer(btn, c, q.answer);
+        container.appendChild(btn);
+      });
+    }
+
+    function selectAnswer(btn, selected, correct) {
+      const allBtns = document.querySelectorAll(".choice-btn");
+      allBtns.forEach(b => {
+        b.classList.add("answered");
+        b.onclick = null;
+        if (b.textContent === correct) b.classList.add("correct");
+      });
+
+      const isCorrect = selected === correct;
+      if (isCorrect) {
+        score++;
+        document.getElementById("feedback").textContent = "Correct!";
+        document.getElementById("feedback").className = "feedback correct-fb";
+      } else {
+        btn.classList.add("wrong");
+        document.getElementById("feedback").textContent = "Wrong — see the correct answer above.";
+        document.getElementById("feedback").className = "feedback wrong-fb";
+      }
+
+      results.push({ word: currentQuestions[currentIndex].word, correct: isCorrect });
+      document.getElementById("next-btn").disabled = false;
+    }
+
+    function nextQuestion() {
+      currentIndex++;
+      if (currentIndex >= 5) {
+        showResult();
+      } else {
+        renderQuestion();
+      }
+    }
+
+    function showResult() {
+      document.getElementById("progress-fill").style.width = "100%";
+      document.getElementById("result-score").textContent = score;
+
+      const msgs = {
+        5: "Perfect! You clearly know this level well.",
+        4: "Great job! Just one to review.",
+        3: "Good effort — the 9-stage mastery system would lock those in.",
+        2: "Room to grow — the app reviews wrong answers within 1 hour.",
+        1: "This level is challenging — daily practice makes a huge difference.",
+        0: "Don't worry — every word starts at Stage 0 and the app guides you up."
+      };
+      document.getElementById("result-msg").textContent = msgs[score];
+
+      const detail = document.getElementById("result-detail");
+      detail.innerHTML = "";
+      results.forEach(r => {
+        const row = document.createElement("div");
+        row.className = "result-row";
+        row.innerHTML = '<span class="r-word">' + r.word + '</span><span class="' + (r.correct ? "r-correct" : "r-wrong") + '">' + (r.correct ? "Correct" : "Wrong") + '</span>';
+        detail.appendChild(row);
+      });
+
+      show("screen-result");
+    }
+
+    function resetDemo() {
+      show("screen-level");
+    }
+  </script>
+</body>
+</html>
