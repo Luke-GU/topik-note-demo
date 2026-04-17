@@ -2,131 +2,154 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>TOPIK Note — Try It Now</title>
   <style>
     :root {
       --fg: #1e293b;
-      --muted: #64748b;
+      --muted: #94a3b8;
+      --muted-dark: #64748b;
       --bg: #ffffff;
-      --surface: #f8fafc;
+      --surface: #f1f5f9;
       --border: #e2e8f0;
       --primary: #3182f6;
       --primary-hover: #2563eb;
+      --primary-light: rgba(49,130,246,0.08);
       --green: #22c55e;
-      --green-bg: #ecfdf5;
-      --green-border: #a7f3d0;
+      --green-bg: rgba(34,197,94,0.08);
+      --green-border: rgba(34,197,94,0.3);
       --red: #ef4444;
-      --red-bg: #fef2f2;
-      --red-border: #fecaca;
-      --radius: 12px;
+      --red-bg: rgba(239,68,68,0.08);
+      --red-border: rgba(239,68,68,0.3);
+      --radius: 16px;
+      --radius-sm: 12px;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Noto Sans KR", "Segoe UI", sans-serif;
       color: var(--fg);
-      background: var(--surface);
+      background: #e8ecf1;
       min-height: 100dvh;
       display: flex;
       align-items: center;
       justify-content: center;
       -webkit-font-smoothing: antialiased;
     }
+
+    /* Phone frame */
     .phone {
       width: 100%;
-      max-width: 420px;
+      max-width: 430px;
       min-height: 100dvh;
       background: var(--bg);
       display: flex;
       flex-direction: column;
+      position: relative;
     }
     @media (min-width: 500px) {
       .phone {
         min-height: auto;
-        height: 780px;
-        border-radius: 28px;
-        box-shadow: 0 30px 60px -20px rgba(30,41,59,0.25);
+        height: 860px;
+        border-radius: 44px;
+        box-shadow: 0 40px 80px -20px rgba(30,41,59,0.3), 0 0 0 1px rgba(0,0,0,0.06);
         overflow: hidden;
         margin: 2rem 1rem;
       }
     }
+
+    /* Screens */
     .screen {
       display: none;
       flex-direction: column;
       flex: 1;
-      padding: 2rem 1.5rem;
+      padding: 0 1.25rem;
       overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
     }
     .screen.active { display: flex; }
-    .screen-header {
-      font-size: 0.85rem;
-      color: var(--muted);
-      margin-bottom: 0.5rem;
-    }
-    h1 { font-size: 1.65rem; line-height: 1.25; letter-spacing: -0.02em; margin-bottom: 0.75rem; }
-    h2 { font-size: 1.35rem; line-height: 1.3; margin-bottom: 0.5rem; }
-    p.sub { color: var(--muted); font-size: 0.95rem; margin-bottom: 1.5rem; }
-    .spacer { flex: 1; }
 
-    /* Level select */
-    .level-btn {
-      display: block;
-      width: 100%;
-      padding: 1rem 1.25rem;
-      margin-bottom: 0.75rem;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
+    /* Top bar */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 0 0.5rem;
+      position: sticky;
+      top: 0;
       background: var(--bg);
-      text-align: left;
-      cursor: pointer;
-      font-family: inherit;
-      font-size: 1rem;
-      color: var(--fg);
-      transition: border-color 0.12s, transform 0.12s;
+      z-index: 10;
     }
-    .level-btn:hover { border-color: var(--primary); transform: translateY(-1px); }
-    .level-btn strong { display: block; font-size: 1.05rem; margin-bottom: 0.15rem; }
-    .level-btn span { color: var(--muted); font-size: 0.85rem; }
+    .topbar-close {
+      width: 32px; height: 32px;
+      display: flex; align-items: center; justify-content: center;
+      border: none; background: none; cursor: pointer;
+      font-size: 1.5rem; color: var(--fg); line-height: 1;
+    }
+    .topbar-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+    .topbar-spacer { width: 32px; }
 
     /* Progress */
-    .progress-bar { height: 4px; background: var(--border); border-radius: 2px; margin-bottom: 1.5rem; overflow: hidden; }
-    .progress-fill { height: 100%; background: var(--primary); transition: width 0.3s ease; border-radius: 2px; }
-    .q-counter { font-size: 0.85rem; color: var(--muted); margin-bottom: 0.5rem; }
+    .progress-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: var(--muted-dark);
+      margin-bottom: 0.35rem;
+    }
+    .progress-bar {
+      height: 5px;
+      background: var(--surface);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--primary);
+      transition: width 0.4s ease;
+      border-radius: 3px;
+    }
 
     /* Word display */
     .word-display {
       text-align: center;
-      padding: 1.5rem 0 0.5rem;
+      padding: 1rem 0;
     }
     .word-korean {
-      font-size: 2.2rem;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-      margin-bottom: 0.25rem;
+      font-size: 2.8rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+      line-height: 1.2;
     }
     .word-pos {
       display: inline-block;
       font-size: 0.8rem;
-      color: var(--primary);
-      background: rgba(49,130,246,0.08);
-      padding: 0.2rem 0.6rem;
+      font-weight: 600;
+      color: var(--muted-dark);
+      background: var(--surface);
+      padding: 0.25rem 0.75rem;
       border-radius: 999px;
-      margin-bottom: 0.25rem;
+      border: 1px solid var(--border);
     }
     .word-prompt {
       color: var(--muted);
-      font-size: 0.9rem;
-      margin-top: 0.5rem;
-      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+      margin-top: 0.75rem;
+      margin-bottom: 1.25rem;
     }
 
-    /* Choices */
+    /* Choices — app style */
+    .choices { display: flex; flex-direction: column; gap: 0.5rem; }
     .choice-btn {
       display: block;
       width: 100%;
-      padding: 0.85rem 1rem;
-      margin-bottom: 0.6rem;
-      border: 1px solid var(--border);
+      padding: 0.9rem 1.1rem;
+      border: 1.5px solid var(--border);
       border-radius: var(--radius);
       background: var(--bg);
       text-align: left;
@@ -134,30 +157,90 @@
       font-family: inherit;
       font-size: 0.95rem;
       color: var(--fg);
-      transition: border-color 0.12s, background 0.12s;
+      transition: border-color 0.15s, background 0.15s, transform 0.1s;
+      line-height: 1.45;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .choice-btn:active:not(.answered) { transform: scale(0.98); }
+    .choice-btn.correct {
+      border-color: var(--green);
+      background: var(--green-bg);
+      color: var(--green);
+      font-weight: 600;
+    }
+    .choice-btn.wrong {
+      border-color: var(--red);
+      background: var(--red-bg);
+      color: var(--red);
+    }
+    .choice-btn.answered { cursor: default; pointer-events: none; }
+    .choice-btn.answered:not(.correct):not(.wrong) { opacity: 0.4; }
+
+    /* Feedback — like the app */
+    .feedback-area {
+      text-align: center;
+      padding: 0.75rem 0 0.25rem;
+      min-height: 3.5rem;
+    }
+    .feedback-icon { font-size: 0.95rem; font-weight: 700; }
+    .feedback-icon.correct-fb { color: var(--green); }
+    .feedback-icon.wrong-fb { color: var(--red); }
+    .feedback-hint {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 0.15rem;
+    }
+
+    /* Word card (shown after answer) */
+    .wordcard {
+      display: none;
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      margin-top: 0.75rem;
+    }
+    .wordcard.show { display: block; }
+    .wordcard-def {
+      font-size: 0.95rem;
+      color: var(--fg);
+      margin-bottom: 0.75rem;
+    }
+    .wordcard-example {
+      background: var(--bg);
+      border-radius: var(--radius-sm);
+      padding: 0.85rem;
+      border: 1px solid var(--border);
+    }
+    .wordcard-example-label {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-bottom: 0.35rem;
+    }
+    .wordcard-example-kr {
+      font-size: 0.95rem;
+      color: var(--fg);
+      margin-bottom: 0.25rem;
+      line-height: 1.5;
+    }
+    .wordcard-example-en {
+      font-size: 0.85rem;
+      color: var(--muted-dark);
       line-height: 1.4;
     }
-    .choice-btn:hover:not(.answered) { border-color: var(--primary); }
-    .choice-btn.correct { border-color: var(--green); background: var(--green-bg); color: var(--green); font-weight: 600; }
-    .choice-btn.wrong { border-color: var(--red); background: var(--red-bg); color: var(--red); }
-    .choice-btn.answered { cursor: default; }
-    .choice-btn.answered:not(.correct):not(.wrong) { opacity: 0.5; }
 
-    /* Feedback */
-    .feedback {
-      text-align: center;
-      padding: 0.75rem 0;
-      font-weight: 600;
-      font-size: 0.95rem;
+    .spacer { flex: 1; }
+
+    /* Bottom button */
+    .bottom-btn-area {
+      padding: 0.75rem 0 1.5rem;
+      position: sticky;
+      bottom: 0;
+      background: var(--bg);
     }
-    .feedback.correct-fb { color: var(--green); }
-    .feedback.wrong-fb { color: var(--red); }
-
-    /* Next button */
-    .next-btn {
+    .btn-primary {
       display: block;
       width: 100%;
-      padding: 0.85rem;
+      padding: 1rem;
       border: none;
       border-radius: var(--radius);
       background: var(--primary);
@@ -166,49 +249,130 @@
       font-size: 1rem;
       font-weight: 600;
       cursor: pointer;
-      margin-top: auto;
-      transition: background 0.12s;
-    }
-    .next-btn:hover { background: var(--primary-hover); }
-    .next-btn:disabled { background: var(--border); cursor: default; }
-
-    /* Result */
-    .result-score {
+      transition: background 0.12s, transform 0.1s;
+      -webkit-tap-highlight-color: transparent;
       text-align: center;
-      padding: 2rem 0 1rem;
+      text-decoration: none;
     }
-    .result-number {
-      font-size: 3.5rem;
-      font-weight: 800;
-      color: var(--primary);
-      line-height: 1;
-    }
-    .result-label { color: var(--muted); font-size: 1rem; margin-top: 0.25rem; }
-    .result-msg {
-      text-align: center;
-      font-size: 1.05rem;
+    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-primary:active { transform: scale(0.98); }
+    .btn-primary:disabled { background: var(--border); color: var(--muted); cursor: default; }
+    .btn-secondary {
+      display: block;
+      width: 100%;
+      padding: 1rem;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg);
       color: var(--fg);
-      margin: 1rem 0 1.5rem;
-      line-height: 1.5;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      text-align: center;
+      text-decoration: none;
+      transition: border-color 0.12s;
+    }
+    .btn-secondary:hover { border-color: var(--muted); }
+
+    /* ===== Level select screen ===== */
+    .level-title {
+      font-size: 1.75rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin: 1rem 0 0.25rem;
+    }
+    .level-sub {
+      color: var(--muted-dark);
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+    }
+    .level-card {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      width: 100%;
+      padding: 1.1rem 1.25rem;
+      margin-bottom: 0.6rem;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg);
+      text-align: left;
+      cursor: pointer;
+      font-family: inherit;
+      transition: border-color 0.12s, transform 0.12s, box-shadow 0.12s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .level-card:active { transform: scale(0.98); }
+    .level-card:hover { border-color: var(--primary); box-shadow: 0 2px 12px rgba(49,130,246,0.08); }
+    .level-icon {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; font-weight: 800;
+      flex-shrink: 0;
+    }
+    .level-icon.lv1 { background: #dbeafe; color: #2563eb; }
+    .level-icon.lv3 { background: #fef3c7; color: #d97706; }
+    .level-icon.lv5 { background: #fce7f3; color: #db2777; }
+    .level-info strong { display: block; font-size: 1rem; margin-bottom: 0.1rem; }
+    .level-info span { color: var(--muted-dark); font-size: 0.8rem; }
+
+    .mastery-banner {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 1rem 1.1rem;
+      margin-top: auto;
+      margin-bottom: 1.5rem;
+      font-size: 0.82rem;
+      color: var(--muted-dark);
+      line-height: 1.55;
+      border: 1px solid var(--border);
+    }
+    .mastery-banner strong { color: var(--fg); }
+
+    /* ===== Result screen ===== */
+    .result-hero { text-align: center; padding: 2.5rem 0 1rem; }
+    .result-emoji { font-size: 4rem; line-height: 1; margin-bottom: 0.5rem; }
+    .result-title { font-size: 1.5rem; font-weight: 800; margin-bottom: 1rem; }
+    .result-stats {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 1.5rem;
+    }
+    .result-stat { text-align: center; }
+    .result-stat-num {
+      font-size: 2rem;
+      font-weight: 800;
+      line-height: 1.1;
+    }
+    .result-stat-num.blue { color: var(--primary); }
+    .result-stat-label {
+      font-size: 0.75rem;
+      color: var(--muted-dark);
+      margin-top: 0.15rem;
     }
     .result-detail {
       border: 1px solid var(--border);
       border-radius: var(--radius);
       overflow: hidden;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
     }
     .result-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0.65rem 1rem;
+      padding: 0.75rem 1rem;
       font-size: 0.9rem;
       border-bottom: 1px solid var(--border);
     }
     .result-row:last-child { border-bottom: none; }
     .result-row .r-word { font-weight: 600; }
-    .r-correct { color: var(--green); }
-    .r-wrong { color: var(--red); }
+    .r-mark { font-weight: 700; font-size: 0.85rem; }
+    .r-mark.correct { color: var(--green); }
+    .r-mark.wrong { color: var(--red); }
 
     .cta-link {
       display: block;
@@ -216,105 +380,156 @@
       color: var(--primary);
       text-decoration: none;
       font-size: 0.95rem;
-      margin-top: 0.75rem;
+      font-weight: 500;
+      margin-top: 0.5rem;
+      padding: 0.5rem;
     }
-    .cta-link:hover { text-decoration: underline; }
-
-    .mastery-note {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1rem;
-      margin-bottom: 1.5rem;
-      font-size: 0.85rem;
-      color: var(--muted);
-      line-height: 1.5;
-    }
-    .mastery-note strong { color: var(--fg); }
   </style>
 </head>
 <body>
   <div class="phone">
-    <!-- Screen: Level Select -->
+
+    <!-- ===== Screen: Level Select ===== -->
     <div class="screen active" id="screen-level">
-      <div class="screen-header">TOPIK Note Demo</div>
-      <h1>Choose your TOPIK level</h1>
-      <p class="sub">We'll quiz you on 5 words from real past TOPIK exams.</p>
-      <button class="level-btn" onclick="startQuiz('beginner')">
-        <strong>TOPIK I (Level 1–2)</strong>
-        <span>Beginner — basic greetings, everyday words</span>
+      <div class="topbar">
+        <a href="index.html" class="topbar-close" aria-label="Back">&times;</a>
+        <span class="topbar-title">TOPIK Note</span>
+        <span class="topbar-spacer"></span>
+      </div>
+      <div class="level-title">Choose your level</div>
+      <div class="level-sub">5 real TOPIK words. No signup needed.</div>
+
+      <button class="level-card" onclick="startQuiz('beginner')">
+        <div class="level-icon lv1">1-2</div>
+        <div class="level-info">
+          <strong>TOPIK I</strong>
+          <span>Beginner — everyday words</span>
+        </div>
       </button>
-      <button class="level-btn" onclick="startQuiz('intermediate')">
-        <strong>TOPIK II (Level 3–4)</strong>
-        <span>Intermediate — daily life, compound words</span>
+      <button class="level-card" onclick="startQuiz('intermediate')">
+        <div class="level-icon lv3">3-4</div>
+        <div class="level-info">
+          <strong>TOPIK II</strong>
+          <span>Intermediate — daily life</span>
+        </div>
       </button>
-      <button class="level-btn" onclick="startQuiz('advanced')">
-        <strong>TOPIK II (Level 5–6)</strong>
-        <span>Advanced — academic, nuanced vocabulary</span>
+      <button class="level-card" onclick="startQuiz('advanced')">
+        <div class="level-icon lv5">5-6</div>
+        <div class="level-info">
+          <strong>TOPIK II</strong>
+          <span>Advanced — academic</span>
+        </div>
       </button>
+
       <div class="spacer"></div>
-      <div class="mastery-note">
-        <strong>In the full app:</strong> each word goes through a 9-stage mastery system.
-        Get it right → review in 4h, 1d, 3d, 1w, 2w, 1mo, 2mo, 4mo. Get it wrong → it returns in 1 hour.
+      <div class="mastery-banner">
+        <strong>9-stage mastery in the full app:</strong><br>
+        Correct → 4h → 1d → 3d → 1w → 2w → 1mo → 2mo → 4mo<br>
+        Wrong → returns in 1 hour
       </div>
     </div>
 
-    <!-- Screen: Quiz -->
+    <!-- ===== Screen: Quiz ===== -->
     <div class="screen" id="screen-quiz">
-      <div class="q-counter" id="q-counter"></div>
+      <div class="topbar">
+        <button class="topbar-close" onclick="resetDemo()" aria-label="Close">&times;</button>
+        <span class="topbar-spacer"></span>
+        <span class="topbar-spacer"></span>
+      </div>
+      <div class="progress-row">
+        <span id="q-counter"></span>
+        <span>Completed words</span>
+      </div>
       <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+
       <div class="word-display">
         <div class="word-korean" id="word-korean"></div>
         <div class="word-pos" id="word-pos"></div>
         <div class="word-prompt">What does this word mean?</div>
       </div>
-      <div id="choices"></div>
-      <div class="feedback" id="feedback"></div>
+
+      <div class="choices" id="choices"></div>
+
+      <div class="feedback-area" id="feedback-area"></div>
+
+      <div id="wordcard" class="wordcard">
+        <div class="wordcard-def" id="wc-def"></div>
+        <div class="wordcard-example">
+          <div class="wordcard-example-label">Example</div>
+          <div class="wordcard-example-kr" id="wc-example-kr"></div>
+          <div class="wordcard-example-en" id="wc-example-en"></div>
+        </div>
+      </div>
+
       <div class="spacer"></div>
-      <button class="next-btn" id="next-btn" disabled onclick="nextQuestion()">Next</button>
+      <div class="bottom-btn-area">
+        <button class="btn-primary" id="quiz-btn" disabled onclick="onQuizBtn()">Check Word</button>
+      </div>
     </div>
 
-    <!-- Screen: Result -->
+    <!-- ===== Screen: Result ===== -->
     <div class="screen" id="screen-result">
-      <div class="screen-header">Session Complete</div>
-      <div class="result-score">
-        <div class="result-number" id="result-score"></div>
-        <div class="result-label">out of 5 correct</div>
+      <div class="topbar">
+        <span class="topbar-spacer"></span>
+        <span class="topbar-spacer"></span>
+        <span class="topbar-spacer"></span>
       </div>
-      <div class="result-msg" id="result-msg"></div>
+      <div class="result-hero">
+        <div class="result-emoji" id="result-emoji"></div>
+        <div class="result-title" id="result-title"></div>
+        <div class="result-stats">
+          <div class="result-stat">
+            <div class="result-stat-num blue" id="rs-correct"></div>
+            <div class="result-stat-label">Correct</div>
+          </div>
+          <div class="result-stat">
+            <div class="result-stat-num" id="rs-total"></div>
+            <div class="result-stat-label">Total</div>
+          </div>
+          <div class="result-stat">
+            <div class="result-stat-num" id="rs-pct"></div>
+            <div class="result-stat-label">Accuracy</div>
+          </div>
+        </div>
+      </div>
+
       <div class="result-detail" id="result-detail"></div>
-      <div class="mastery-note">
-        <strong>In the full app:</strong> wrong answers return in 1 hour. Words you master space out to 120 days.
-        Every word is reviewed and verified by native Korean speakers.
+
+      <div class="mastery-banner">
+        <strong>In the full app:</strong> wrong answers return in 1 hour.
+        Words you master space out to 120 days. Every word is reviewed by native Korean speakers.
       </div>
+
       <div class="spacer"></div>
-      <a class="next-btn" href="index.html#thanks" style="text-align:center;text-decoration:none;">Request full demo access</a>
-      <a class="cta-link" href="#" onclick="resetDemo();return false;">Try another level</a>
+      <div class="bottom-btn-area">
+        <a class="btn-primary" href="index.html#thanks">Request full demo access</a>
+        <a class="cta-link" href="#" onclick="resetDemo();return false;">Try another level</a>
+      </div>
     </div>
   </div>
 
   <script>
     const WORDS = {
       beginner: [
-        { word: "크다", pos: "Adjective", answer: "Large or numerous in size or scale.", wrong: ["To try to benefit or help someone.", "School vacation; holiday.", "Quickly; fast."] },
-        { word: "방학", pos: "Noun", answer: "School vacation; holiday.", wrong: ["Jeans.", "Evening; dinner.", "Large or numerous in size."] },
-        { word: "청바지", pos: "Noun", answer: "Jeans.", wrong: ["Fishing.", "Weekday.", "The duration of the current week."] },
-        { word: "대사관", pos: "Noun", answer: "A diplomatic office established by one country in another.", wrong: ["A place where animals are kept.", "Writing that you're quitting your job.", "Effort."] },
-        { word: "저녁", pos: "Noun", answer: "Evening; dinner.", wrong: ["Parents.", "Newly; not existing before.", "School vacation; holiday."] }
+        { word: "\ud06c\ub2e4", pos: "Adjective", answer: "Large or numerous in size or scale.", wrong: ["To try to benefit or help someone.", "School vacation; holiday.", "Quickly; fast."], example: { kr: "\uc544\uc774\ub4e4\uc774 \uc790\ub77c\uc11c \ud0a4\uac00 \ub9ce\uc774 \ucee4\uc84c\ub2e4.", en: "The children grew up and became much taller." } },
+        { word: "\ubc29\ud559", pos: "Noun", answer: "School vacation; holiday.", wrong: ["Jeans.", "Evening; dinner.", "Large or numerous in size."], example: { kr: "\ubc29\ud559 \ub3d9\uc548 \uac00\uc871\uacfc \ud568\uaed8 \uc5ec\ud589\uc744 \uac14\ub2e4.", en: "I went on a trip with my family during vacation." } },
+        { word: "\uccad\ubc14\uc9c0", pos: "Noun", answer: "Jeans.", wrong: ["Fishing.", "Weekday.", "The duration of the current week."], example: { kr: "\uccad\ubc14\uc9c0\ub294 \uc5b4\ub5a4 \uc637\uacfc\ub3c4 \uc798 \uc5b4\uc6b8\ub9b0\ub2e4.", en: "Jeans go well with any outfit." } },
+        { word: "\ub300\uc0ac\uad00", pos: "Noun", answer: "A diplomatic office established by one country in another.", wrong: ["A place where animals are kept.", "A letter of resignation.", "Effort."], example: { kr: "\ube44\uc790\ub97c \ubc1b\uc73c\ub824\uba74 \ub300\uc0ac\uad00\uc5d0 \uac00\uc57c \ud55c\ub2e4.", en: "You need to go to the embassy to get a visa." } },
+        { word: "\uc800\ub141", pos: "Noun", answer: "Evening; dinner.", wrong: ["Parents.", "Newly; not existing before.", "School vacation; holiday."], example: { kr: "\uc800\ub141\uc744 \uba39\uc740 \ud6c4\uc5d0 \uc0b0\ucc45\uc744 \ud588\ub2e4.", en: "I took a walk after dinner." } }
       ],
       intermediate: [
-        { word: "사표", pos: "Noun", answer: "A letter of resignation from one's job.", wrong: ["Parents.", "Jeans.", "A lapse of a fairly long time."] },
-        { word: "붉다", pos: "Adjective", answer: "The color is like blood or a ripe red pepper.", wrong: ["Large or numerous in size.", "To be in harmony and unite as one.", "Quickly; fast."] },
-        { word: "출입국", pos: "Noun", answer: "The act of entering or leaving a country.", wrong: ["An inconvenience in using something.", "School vacation; holiday.", "Effort."] },
-        { word: "동물원", pos: "Noun", answer: "A place where animals are collected and kept for people to see.", wrong: ["A diplomatic office in another country.", "A person who leads a team.", "Ordinary times with nothing special."] },
-        { word: "사회생활", pos: "Noun", answer: "Living as a member of society and interacting with others.", wrong: ["A letter of resignation.", "The month before the current month.", "Newly; not existing before."] }
+        { word: "\uc0ac\ud45c", pos: "Noun", answer: "A letter of resignation from one's job.", wrong: ["Parents.", "Jeans.", "A lapse of a fairly long time."], example: { kr: "\uadf8\ub294 \ud68c\uc0ac\uc5d0 \uc0ac\ud45c\ub97c \ub0c8\ub2e4.", en: "He submitted his resignation to the company." } },
+        { word: "\ubd89\ub2e4", pos: "Adjective", answer: "The color is like blood or a ripe red pepper.", wrong: ["Large or numerous in size.", "To be in harmony and unite as one.", "Quickly; fast."], example: { kr: "\ud574\uac00 \uc9c0\uba74\uc11c \ud558\ub298\uc774 \ubd89\uac8c \ubb3c\ub4e4\uc5c8\ub2e4.", en: "The sky turned red as the sun set." } },
+        { word: "\ucd9c\uc785\uad6d", pos: "Noun", answer: "The act of entering or leaving a country.", wrong: ["An inconvenience in using something.", "School vacation; holiday.", "Effort."], example: { kr: "\ucd9c\uc785\uad6d \uc2ec\uc0ac\ub97c \ubc1b\ub294 \ub370 \uc2dc\uac04\uc774 \uac78\ub838\ub2e4.", en: "The immigration check took some time." } },
+        { word: "\ub3d9\ubb3c\uc6d0", pos: "Noun", answer: "A place where animals are collected and kept for people to see.", wrong: ["A diplomatic office in another country.", "A person who leads a team.", "Ordinary times with nothing special."], example: { kr: "\uc8fc\ub9d0\uc5d0 \uc544\uc774\ub4e4\uacfc \ub3d9\ubb3c\uc6d0\uc5d0 \uac14\ub2e4.", en: "I went to the zoo with the kids on the weekend." } },
+        { word: "\uc0ac\ud68c\uc0dd\ud65c", pos: "Noun", answer: "Living as a member of society and interacting with others.", wrong: ["A letter of resignation.", "The month before the current month.", "Newly; not existing before."], example: { kr: "\uc0ac\ud68c\uc0dd\ud65c\uc5d0\uc11c\ub294 \ub300\uc778 \uad00\uacc4\uac00 \uc911\uc694\ud558\ub2e4.", en: "Interpersonal relationships are important in social life." } }
       ],
       advanced: [
-        { word: "노력", pos: "Noun", answer: "Effort.", wrong: ["An inconvenience.", "Ordinary times.", "A person who does sports."] },
-        { word: "어울리다", pos: "Verb", answer: "For several things to be in harmony and unite as one.", wrong: ["To try to benefit or help someone.", "The color is like blood.", "Large or numerous in size."] },
-        { word: "한참", pos: "Adverb", answer: "A lapse of a fairly long time.", wrong: ["Newly; not existing before.", "Quickly; fast.", "Evening; dinner."] },
-        { word: "운동선수", pos: "Noun", answer: "A person who does sports as a profession.", wrong: ["A person who leads a team.", "A person who takes part in an event.", "A diplomatic office in another country."] },
-        { word: "불편", pos: "Noun", answer: "An inconvenience in using something.", wrong: ["Effort.", "A lapse of a fairly long time.", "Living as a member of society."] }
+        { word: "\ub178\ub825", pos: "Noun", answer: "Effort.", wrong: ["An inconvenience.", "Ordinary times.", "A person who does sports."], example: { kr: "\ub178\ub825 \uc5c6\uc774 \uc131\uacf5\ud560 \uc218 \uc5c6\ub2e4.", en: "You cannot succeed without effort." } },
+        { word: "\uc5b4\uc6b8\ub9ac\ub2e4", pos: "Verb", answer: "For several things to be in harmony and unite as one.", wrong: ["To try to benefit or help someone.", "The color is like blood.", "Large or numerous in size."], example: { kr: "\uc774 \uc625\uc740 \ub2f9\uc2e0\uc5d0\uac8c \uc798 \uc5b4\uc6b8\ub9bd\ub2c8\ub2e4.", en: "These clothes suit you well." } },
+        { word: "\ud55c\ucc38", pos: "Adverb", answer: "A lapse of a fairly long time.", wrong: ["Newly; not existing before.", "Quickly; fast.", "Evening; dinner."], example: { kr: "\ubc84\uc2a4\ub97c \ud55c\ucc38 \ub3d9\uc548 \uae30\ub2e4\ub838\ub2e4.", en: "I waited for the bus for quite a while." } },
+        { word: "\uc6b4\ub3d9\uc120\uc218", pos: "Noun", answer: "A person who does sports as a profession.", wrong: ["A person who leads a team.", "A person who takes part in an event.", "A diplomatic office in another country."], example: { kr: "\uadf8\ub294 \uc720\uba85\ud55c \uc6b4\ub3d9\uc120\uc218\uac00 \ub418\uc5c8\ub2e4.", en: "He became a famous athlete." } },
+        { word: "\ubd88\ud3b8", pos: "Noun", answer: "An inconvenience in using something.", wrong: ["Effort.", "A lapse of a fairly long time.", "Living as a member of society."], example: { kr: "\ubd88\ud3b8\ud55c \uc810\uc774 \uc788\uc73c\uba74 \ub9d0\uc500\ud574 \uc8fc\uc138\uc694.", en: "Please let us know if there is any inconvenience." } }
       ]
     };
 
@@ -323,10 +538,12 @@
     let currentIndex = 0;
     let score = 0;
     let results = [];
+    let answered = false;
 
     function show(id) {
       document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
       document.getElementById(id).classList.add("active");
+      document.getElementById(id).scrollTop = 0;
     }
 
     function shuffle(arr) {
@@ -349,48 +566,72 @@
     }
 
     function renderQuestion() {
+      answered = false;
       const q = currentQuestions[currentIndex];
       document.getElementById("q-counter").textContent = (currentIndex + 1) + " / 5";
       document.getElementById("progress-fill").style.width = ((currentIndex) / 5 * 100) + "%";
       document.getElementById("word-korean").textContent = q.word;
       document.getElementById("word-pos").textContent = q.pos;
-      document.getElementById("feedback").textContent = "";
-      document.getElementById("feedback").className = "feedback";
-      document.getElementById("next-btn").disabled = true;
+      document.getElementById("feedback-area").innerHTML = "";
+      document.getElementById("wordcard").classList.remove("show");
+
+      const btn = document.getElementById("quiz-btn");
+      btn.disabled = true;
+      btn.textContent = "Check Word";
+      btn.onclick = function() { showWordCard(); };
 
       const choices = shuffle([q.answer, ...q.wrong]);
       const container = document.getElementById("choices");
       container.innerHTML = "";
       choices.forEach(c => {
-        const btn = document.createElement("button");
-        btn.className = "choice-btn";
-        btn.textContent = c;
-        btn.onclick = () => selectAnswer(btn, c, q.answer);
-        container.appendChild(btn);
+        const el = document.createElement("button");
+        el.className = "choice-btn";
+        el.textContent = c;
+        el.onclick = () => selectAnswer(el, c, q.answer);
+        container.appendChild(el);
       });
     }
 
-    function selectAnswer(btn, selected, correct) {
+    function selectAnswer(el, selected, correct) {
+      if (answered) return;
+      answered = true;
+
       const allBtns = document.querySelectorAll(".choice-btn");
       allBtns.forEach(b => {
         b.classList.add("answered");
-        b.onclick = null;
         if (b.textContent === correct) b.classList.add("correct");
       });
 
       const isCorrect = selected === correct;
+      if (!isCorrect) el.classList.add("wrong");
+
+      const fb = document.getElementById("feedback-area");
       if (isCorrect) {
         score++;
-        document.getElementById("feedback").textContent = "Correct!";
-        document.getElementById("feedback").className = "feedback correct-fb";
+        fb.innerHTML = '<div class="feedback-icon correct-fb">\u2713 Correct</div>';
       } else {
-        btn.classList.add("wrong");
-        document.getElementById("feedback").textContent = "Wrong — see the correct answer above.";
-        document.getElementById("feedback").className = "feedback wrong-fb";
+        fb.innerHTML = '<div class="feedback-icon wrong-fb">\u00d7 Wrong</div><div class="feedback-hint">Wrong answers will be asked again shortly</div>';
       }
 
       results.push({ word: currentQuestions[currentIndex].word, correct: isCorrect });
-      document.getElementById("next-btn").disabled = false;
+
+      const btn = document.getElementById("quiz-btn");
+      btn.disabled = false;
+      btn.textContent = "Check Word";
+    }
+
+    function showWordCard() {
+      const q = currentQuestions[currentIndex];
+      document.getElementById("wc-def").textContent = q.answer;
+      document.getElementById("wc-example-kr").textContent = q.example.kr;
+      document.getElementById("wc-example-en").textContent = q.example.en;
+      document.getElementById("wordcard").classList.add("show");
+
+      const btn = document.getElementById("quiz-btn");
+      btn.textContent = "Next";
+      btn.onclick = function() { nextQuestion(); };
+
+      document.getElementById("wordcard").scrollIntoView({ behavior: "smooth", block: "center" });
     }
 
     function nextQuestion() {
@@ -404,24 +645,23 @@
 
     function showResult() {
       document.getElementById("progress-fill").style.width = "100%";
-      document.getElementById("result-score").textContent = score;
 
-      const msgs = {
-        5: "Perfect! You clearly know this level well.",
-        4: "Great job! Just one to review.",
-        3: "Good effort — the 9-stage mastery system would lock those in.",
-        2: "Room to grow — the app reviews wrong answers within 1 hour.",
-        1: "This level is challenging — daily practice makes a huge difference.",
-        0: "Don't worry — every word starts at Stage 0 and the app guides you up."
-      };
-      document.getElementById("result-msg").textContent = msgs[score];
+      const pct = Math.round((score / 5) * 100);
+      document.getElementById("rs-correct").textContent = score;
+      document.getElementById("rs-total").textContent = "5";
+      document.getElementById("rs-pct").textContent = pct + "%";
+
+      const emoji = score >= 4 ? "\ud83c\udf89" : score >= 2 ? "\ud83d\udcaa" : "\ud83d\udca1";
+      const title = score === 5 ? "Perfect!" : score >= 4 ? "Great job!" : score >= 2 ? "Good effort!" : "Keep going!";
+      document.getElementById("result-emoji").textContent = emoji;
+      document.getElementById("result-title").textContent = title;
 
       const detail = document.getElementById("result-detail");
       detail.innerHTML = "";
       results.forEach(r => {
         const row = document.createElement("div");
         row.className = "result-row";
-        row.innerHTML = '<span class="r-word">' + r.word + '</span><span class="' + (r.correct ? "r-correct" : "r-wrong") + '">' + (r.correct ? "Correct" : "Wrong") + '</span>';
+        row.innerHTML = '<span class="r-word">' + r.word + '</span><span class="r-mark ' + (r.correct ? "correct" : "wrong") + '">' + (r.correct ? "\u2713 Correct" : "\u00d7 Wrong") + "</span>";
         detail.appendChild(row);
       });
 
