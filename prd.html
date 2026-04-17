@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TOPIK Note — PRD</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* PRD-specific overrides */
+    main.prd { max-width: 780px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+    main.prd h1 { font-size: 1.85rem; margin: 0 0 0.25rem; }
+    main.prd .prd-meta { color: var(--muted); font-size: 0.85rem; margin-bottom: 2rem; }
+    main.prd h2 { font-size: 1.35rem; margin: 2.5rem 0 0.75rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+    main.prd h3 { font-size: 1.1rem; margin: 1.5rem 0 0.5rem; }
+    main.prd p, main.prd li { line-height: 1.7; }
+    main.prd ul { padding-left: 1.25rem; margin: 0.5rem 0; }
+    main.prd li { margin: 0.35rem 0; }
+    main.prd blockquote { border-left: 3px solid var(--primary); margin: 1rem 0; padding: 0.5rem 0 0.5rem 1rem; color: var(--fg); font-style: italic; }
+    main.prd table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem; }
+    main.prd th, main.prd td { border: 1px solid var(--border); padding: 0.6rem 0.75rem; text-align: left; }
+    main.prd th { background: var(--surface); font-weight: 600; }
+    main.prd code { font-size: 0.85em; background: var(--surface); padding: 0.15em 0.4em; border-radius: 4px; }
+    /* Flow diagram */
+    .flow-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; margin: 1rem 0; overflow-x: auto; font-family: "SF Mono", "Fira Code", monospace; font-size: 0.82rem; line-height: 1.6; white-space: pre; }
+    /* Highlight S6 */
+    .screen-highlight { background: rgba(49,130,246,0.08); border-left: 3px solid var(--primary); }
+    .screen-highlight td { font-weight: 600; }
+    /* Assumption cards */
+    .assumption-card { border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; margin: 1rem 0; }
+    .assumption-card h3 { margin-top: 0; }
+    .assumption-card .a-quote { border-left: 3px solid var(--primary); padding-left: 0.75rem; margin: 0.75rem 0; font-style: italic; }
+    .assumption-card .a-row { display: flex; gap: 0.5rem; margin: 0.35rem 0; font-size: 0.9rem; }
+    .assumption-card .a-label { font-weight: 600; min-width: 5.5rem; flex-shrink: 0; }
+    /* Checklist */
+    .checklist { list-style: none; padding: 0; }
+    .checklist li { padding: 0.35rem 0; padding-left: 1.5rem; position: relative; }
+    .checklist li::before { content: "\2713"; position: absolute; left: 0; color: var(--primary); font-weight: 700; }
+    /* Summary table */
+    .summary-table th:first-child { width: 5.5rem; }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a class="brand" href="index.html">
+        <strong>TOPIK Note</strong>
+        <span class="tagline">PRD</span>
+      </a>
+      <nav class="lang-switcher" aria-label="Navigation">
+        <a href="index.html">Landing</a>
+        <a href="demo.html">Demo</a>
+        <a href="prd.html" class="active">PRD</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="prd">
+    <h1>TOPIK Note — 1-Page PRD</h1>
+    <div class="prd-meta">
+      GEONWOO JUNG &middot; codelue01@gmail.com &middot; 2026-04-16
+    </div>
+
+    <!-- Executive Summary -->
+    <h2>Executive Summary</h2>
+    <table class="summary-table">
+      <tr><th>관점</th><th>1줄 요약</th></tr>
+      <tr><td><strong>사업</strong></td><td>외국인 TOPIK 응시자(연 49만 명)가 "한국인이 검수한 시험 특화 앱"에 비용을 지불하는지 검증한다. 성공 지표: lifetime 구매 전환율 &ge; 2%.</td></tr>
+      <tr><td><strong>제품/기술</strong></td><td>9단계 SM-2 간격 반복 + 4유형 퀴즈를 Expo/React Native/SQLite 오프라인 우선으로 구현. 핵심 화면은 S3(홈) &rarr; S6(퀴즈 세션).</td></tr>
+      <tr><td><strong>마케팅</strong></td><td>"한국인이 직접 검수한 유일한 TOPIK 단어 앱"으로 ASO 니치 선점. 무료 20단어/일로 진입 장벽 제거, 기출 커버리지로 전환 유도.</td></tr>
+    </table>
+
+    <!-- Section 0 -->
+    <h2>0. 캐노니컬 카피</h2>
+    <p><strong>타깃 페르소나:</strong> 유학·취업·비자 목적으로 3~6개월 안에 TOPIK 3급 이상을 따야 하는 외국인 성인 학습자. 하루 중 학습에 쓸 수 있는 시간은 출퇴근 30~60분뿐이다.</p>
+
+    <h3>핵심 고통 장면</h3>
+    <blockquote>매일 아침 지하철에서 한국어 앱을 켠다. 시험 2주 전에야 실제 기출 시험지를 펼쳤는데 단어의 70%가 처음 본다. 써봤던 앱들은 대부분 외국인 제작진이 만들어 오기입과 잘못된 정답이 많았고, 한국어 학원은 비싸고 시간표도 맞지 않는다.</blockquote>
+
+    <h3>기존 대안의 한계</h3>
+    <ul>
+      <li>일반 한국어 학습 앱은 회화 중심 &mdash; TOPIK 시험 어휘 커버리지가 얕다.</li>
+      <li>"TOPIK 대비" 앱 대부분은 외국인 제작 &mdash; 오기입·잘못된 정답·어색한 번역이 빈번.</li>
+      <li>한국어 학원은 비싸고, 수동적이고, 출퇴근 일정에 맞지 않는다.</li>
+    </ul>
+
+    <h3>3 핵심 기능 (고통 1:1 매핑)</h3>
+    <table>
+      <tr><th>기능</th><th>해결하는 고통</th></tr>
+      <tr><td>실제 TOPIK 기출 7,970문제 + 4가지 퀴즈 유형</td><td>커버리지 부족</td></tr>
+      <tr><td>9단계 간격 반복 학습 (4h&rarr;1d&rarr;3d&rarr;1w&rarr;2w&rarr;1mo&rarr;2mo&rarr;4mo / 틀리면 1시간)</td><td>30~60분 시간 효율</td></tr>
+      <tr><td>모든 단어를 한국인 원어민이 직접 검수 + 국립국어원 krdict 기반</td><td>오기입·오답 신뢰 문제 <em>(핵심 차별점)</em></td></tr>
+    </table>
+
+    <h3>포지셔닝</h3>
+    <p><em>"TOPIK 3급 이상을 노리는 외국인 학습자를 위한 앱. 실제 기출 단어를 간격 반복 스케줄로 학습하며, 모든 단어는 한국인 원어민이 직접 검수했다."</em></p>
+
+    <h3>Before / After</h3>
+    <table>
+      <tr><th></th><th>Before</th><th>After (TOPIK Note)</th></tr>
+      <tr><td><strong>일일 학습</strong></td><td>40분, 일반 회화 단어</td><td>25분, 실제 기출 단어만</td></tr>
+      <tr><td><strong>시험장</strong></td><td>단어 70% 낯설다</td><td>단어 80%+ 이미 본 것 (3회+ 노출)</td></tr>
+      <tr><td><strong>학습 신호</strong></td><td>무엇을 학습할지 모름</td><td>앱이 오늘의 단어를 정확히 지정</td></tr>
+    </table>
+
+    <!-- Section 1 -->
+    <h2>1. 사용자 플로우</h2>
+    <p>두 여정이 <strong>홈 허브(S3)</strong>에서 합류, 핵심 가치는 <strong style="color:var(--primary);">학습 세션(S6)</strong>에서 전달.</p>
+
+    <div class="flow-box">J1 — 신규 학습자
+  S1 웰컴
+    └─▶ S2 레벨 선택 ─┬─▶ S2a 레벨 테스트 (20문항)
+                      └─▶ S2b 직접 선택 (1-2 / 3-4 / 5-6)
+                           └─▶ <strong>S3 홈 허브</strong> ◀── J2 합류
+                                │
+                                ├─ 무료: 20개/일 ──▶ S8 페이월
+                                └─ 프리미엄 ──▶ <strong style="color:var(--primary);">S6 학습 세션 ★</strong>
+                                                  └─▶ S7 결과
+
+J2 — 복귀 학습자
+  <strong>S3 홈</strong> ─▶ <strong style="color:var(--primary);">S6 학습 세션</strong> ─▶ S7 결과 ─▶ S4 통계</div>
+
+    <h3>분기 조건</h3>
+    <ul>
+      <li><code>isOnboarded === false</code> &rarr; J1, 아니면 J2</li>
+      <li><code>premium === false && 남은 새 단어 &le; 0</code> &rarr; S8 페이월 오버레이</li>
+      <li>통계(S4) 차트 &rarr; 프리미엄 잠금</li>
+    </ul>
+
+    <!-- Section 2 -->
+    <h2>2. 화면 목록</h2>
+    <table>
+      <tr><th>ID</th><th>화면명</th><th>사용자 목적</th><th>핵심 컴포넌트</th></tr>
+      <tr><td>S1</td><td>웰컴</td><td>약관 동의 후 앱 진입</td><td>히어로 카피, 시작 버튼</td></tr>
+      <tr><td>S2</td><td>레벨 선택</td><td>시작 레벨 설정 방법 결정</td><td>2개 선택 카드</td></tr>
+      <tr><td>S2a</td><td>레벨 테스트</td><td>20문항으로 TOPIK 레벨 증명</td><td>QuizChoices, ProgressBar</td></tr>
+      <tr><td>S2b</td><td>직접 선택</td><td>TOPIK 급수 직접 선택</td><td>급수 카드</td></tr>
+      <tr><td>S3</td><td>홈 허브</td><td>오늘의 학습 시작 + 할당량 확인</td><td>할당량 카드, 4개 버튼</td></tr>
+      <tr><td>S4</td><td>통계</td><td>스트릭·정답률·취약 부분 확인</td><td>차트, PremiumLock</td></tr>
+      <tr><td>S5</td><td>설정</td><td>언어·알림 변경</td><td>SettingsRow</td></tr>
+      <tr class="screen-highlight"><td>S6</td><td>학습 세션</td><td>퀴즈를 풀고 학습 성과 기록</td><td>QuizChoices, WordCard, SessionProgress</td></tr>
+      <tr><td>S7</td><td>결과</td><td>세션 결과 + 다음 복습 확인</td><td>요약, 계속하기 CTA</td></tr>
+      <tr><td>S8</td><td>페이월</td><td>무제한 + 전체 통계 해제</td><td>SKU 카드 (Lifetime/Annual/Monthly)</td></tr>
+    </table>
+    <p>핵심 가치 전달 화면: <strong style="color:var(--primary);">S6 학습 세션</strong>. 나머지는 퍼널.</p>
+
+    <!-- Section 3 -->
+    <h2>3. MVP 범위</h2>
+    <h3>In (필수)</h3>
+    <table>
+      <tr><th>항목</th><th>근거</th></tr>
+      <tr><td>4가지 퀴즈 유형 + 9단계 SM-2</td><td>"적시에 맞는 단어를 학습" 주장의 근간</td></tr>
+      <tr><td>무료 하루 새 단어 20개</td><td>외부 평가자가 가입 없이 체험 가능</td></tr>
+      <tr><td>레벨 테스트 + 직접 선택</td><td>온보딩 마찰 감소</td></tr>
+      <tr><td>한국인 검수 기출 7,970문제 (TOPIK 1~6)</td><td>"기출 단어, 한국인 검수" 주장 검증</td></tr>
+      <tr><td>4개 UI 언어 (en/ja/vi/zh)</td><td>타깃 시장 일치. KO는 production에서 제거 (외국인 대상)</td></tr>
+    </table>
+
+    <h3>Out (조건부)</h3>
+    <ul>
+      <li><strong>모의기출 모드</strong> &mdash; lifetime 전환율 확인 후</li>
+      <li><strong>발음 AI</strong> &mdash; TTS fallback 안정화 후</li>
+      <li><strong>소셜 리더보드</strong> &mdash; DAU 도달 후</li>
+    </ul>
+
+    <h3>완료 기준</h3>
+    <blockquote>처음 보는 외부 평가자가 안내 없이 앱을 열고, 60초 안에 레벨을 선택하고, 도움말 없이 TOPIK 단어 퀴즈 5문항을 풀 수 있다.</blockquote>
+
+    <!-- Section 4 -->
+    <h2>4. 핵심 가정 및 검증</h2>
+    <p>틀리면 제품이 죽는 2개의 가정.</p>
+
+    <div class="assumption-card">
+      <h3>가정 1 &mdash; 비즈니스</h3>
+      <div class="a-quote">"비자·유학·취업 목적의 TOPIK 준비자는, 한국인이 직접 검수한 시험 특화 도구에 비용을 지불할 의향이 있다."</div>
+      <div class="a-row"><span class="a-label">왜 치명적</span><span>"무료로 충분"이면 모든 투자 낭비</span></div>
+      <div class="a-row"><span class="a-label">검증 방법</span><span>출시 4주 코호트, PostHog 퍼널</span></div>
+      <div class="a-row"><span class="a-label">성공 지표</span><span>페이월 &rarr; IAP 전환율 &ge; <strong>2%</strong> (lifetime, 4주, &ge;300 노출)</span></div>
+    </div>
+
+    <div class="assumption-card">
+      <h3>가정 2 &mdash; 기술</h3>
+      <div class="a-quote">"SM-2 간격 반복이 일반 학습자에게도 70%+ 기억 유지율을 만들어, 학습 성과로 이어진다."</div>
+      <div class="a-row"><span class="a-label">왜 치명적</span><span>기억 약하면 "봤지만 시험에서 못 떠올림" &rarr; 핵심 약속 붕괴</span></div>
+      <div class="a-row"><span class="a-label">검증 방법</span><span>30일차 코호트 correctStreak 분석</span></div>
+      <div class="a-row"><span class="a-label">성공 지표</span><span>2회+ 노출 단어의 &ge; <strong>70%</strong>에서 correctStreak &ge; 4</span></div>
+    </div>
+
+    <!-- Section 5 -->
+    <h2>5. MVP URL</h2>
+    <table>
+      <tr><th>채널</th><th>URL</th></tr>
+      <tr><td>랜딩</td><td><a href="index.html">luke-gu.github.io/topik-note-demo</a></td></tr>
+      <tr><td>웹 데모 (5문항)</td><td><a href="demo.html">luke-gu.github.io/topik-note-demo/demo.html</a></td></tr>
+      <tr><td>iOS</td><td><em>App Store 심사 중 (TestFlight)</em></td></tr>
+      <tr><td>Android</td><td><em>Google Play 내부 테스트 중</em></td></tr>
+    </table>
+
+    <!-- Section 6 -->
+    <h2>6. 일관성 체크</h2>
+    <ul class="checklist">
+      <li>3 deliverable이 <strong>같은 페르소나</strong>를 묘사 (TOPIK 3급+ 외국인, 출퇴근 30~60분)</li>
+      <li>3 deliverable이 <strong>같은 3 핵심 기능</strong>을 묘사 (기출 / 9단계 반복 / 한국인 검수)</li>
+      <li>핵심 가정 &amp; 검증 섹션 존재, 수치 성공 지표 포함</li>
+      <li>MVP URL 작동 (랜딩 + 웹 데모)</li>
+      <li>각 기능이 고통과 1:1 매핑</li>
+      <li>포지셔닝이 1문장 "For X, Y, why Z" 형식</li>
+      <li>랜딩에 1건+ 사용자 후기 (social proof)</li>
+    </ul>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>제작 GEONWOO JUNG &middot; <a href="mailto:codelue01@gmail.com">codelue01@gmail.com</a></p>
+    </div>
+  </footer>
+</body>
+</html>
